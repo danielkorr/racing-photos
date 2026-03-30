@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ALMS Laguna Seca 2009 — Daniel Orr Photography</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0e0e0e;
+      color: #e0e0e0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    header .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #e8a020;
+      margin-bottom: 0.6rem;
+    }
+    header h1 {
+      font-size: clamp(1.8rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    header h1 span { color: #e8a020; }
+    header .sub {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      color: #888;
+      letter-spacing: 0.08em;
+    }
+    header .photo-count {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    /* ── Gallery ── */
+    .gallery {
+      column-count: 3;
+      column-gap: 0.75rem;
+      padding: 2rem 1.5rem 3rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    @media (max-width: 900px)  { .gallery { column-count: 2; } }
+    @media (max-width: 520px)  { .gallery { column-count: 1; } }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 3px;
+      transition: opacity 0.2s;
+    }
+    .gallery-item:hover img { opacity: 0.82; }
+
+    .caption {
+      font-size: 0.78rem;
+      color: #999;
+      padding: 0.35rem 0.1rem 0;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    /* ── Section Headers ── */
+    .section-header {
+      max-width: 1400px;
+      margin: 2.5rem auto 0;
+      padding: 1rem 1.5rem 0.75rem;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #e8a020;
+      font-weight: 700;
+    }
+    .section-sub {
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 0.25rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid #1e1e1e;
+      font-size: 0.75rem;
+      color: #555;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Lightbox ── */
+    #lb-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.93);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1rem;
+    }
+    #lb-overlay.open { display: flex; }
+
+    #lb-img {
+      max-width: min(90vw, 1100px);
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 3px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+    #lb-caption {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #bbb;
+      font-style: italic;
+      text-align: center;
+      max-width: 700px;
+    }
+    #lb-close {
+      position: fixed;
+      top: 1rem; right: 1.25rem;
+      font-size: 2rem;
+      color: #fff;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+      opacity: 0.65;
+    }
+    #lb-close:hover { opacity: 1; }
+    #lb-prev, #lb-next {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.8rem;
+      color: #fff;
+      cursor: pointer;
+      background: none;
+      border: none;
+      opacity: 0.45;
+      padding: 0 0.6rem;
+      user-select: none;
+    }
+    #lb-prev:hover, #lb-next:hover { opacity: 1; }
+    #lb-prev { left: 0.4rem; }
+    #lb-next { right: 0.4rem; }
+    #lb-counter {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      color: #555;
+      letter-spacing: 0.12em;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Daniel Orr Photography</div>
+  <h1>ALMS <span>Laguna Seca</span> 2009</h1>
+  <div class="sub">American Le Mans Series &nbsp;&middot;&nbsp; Mazda Raceway &nbsp;&middot;&nbsp; The Race with the Pace</div>
+  <div class="photo-count">38 photographs</div>
+  <div class="photo-count" style="margin-top:0.3rem; color:#666;">in two collections</div>
+</header>
+
+<div class="section-header">
+  <div class="section-label">ALMS Laguna Seca 2009</div>
+  <div class="section-sub">American Le Mans Series &nbsp;&middot;&nbsp; Mazda Raceway &nbsp;&middot;&nbsp; Monterey, CA</div>
+</div>
+
+<div class="gallery">
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krsshqy8bV1qa8678o1_r2_1280.jpg" data-caption="train at turn 4 (dusk)">
+    <img src="https://64.media.tumblr.com/tumblr_krsshqy8bV1qa8678o1_r2_1280.jpg" alt="train at turn 4 (dusk)" loading="lazy">
+    <div class="caption">train at turn 4 (dusk)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krsr0qsaF61qa8678o1_1280.jpg" data-caption="Flying Lizard #44 in corkscrew">
+    <img src="https://64.media.tumblr.com/tumblr_krsr0qsaF61qa8678o1_1280.jpg" alt="Flying Lizard #44 in corkscrew" loading="lazy">
+    <div class="caption">Flying Lizard #44 in corkscrew</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krsqqa67qP1qa8678o1_1280.jpg" data-caption="Prototype ballet; tight formation in turn 10">
+    <img src="https://64.media.tumblr.com/tumblr_krsqqa67qP1qa8678o1_1280.jpg" alt="Prototype ballet; tight formation in turn 10" loading="lazy">
+    <div class="caption">Prototype ballet; tight formation in turn 10</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs7lmWF3f1qa8678o1_1280.jpg" data-caption="David Brabham at dusk">
+    <img src="https://64.media.tumblr.com/tumblr_krs7lmWF3f1qa8678o1_1280.jpg" alt="David Brabham at dusk" loading="lazy">
+    <div class="caption">David Brabham at dusk</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs7d9uMp91qa8678o1_r1_1280.jpg" data-caption="Lola B06 (J. Field / C. Field)">
+    <img src="https://64.media.tumblr.com/tumblr_krs7d9uMp91qa8678o1_r1_1280.jpg" alt="Lola B06 (J. Field / C. Field)" loading="lazy">
+    <div class="caption">Lola B06 (J. Field / C. Field)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs73qf3pI1qa8678o1_1280.jpg" data-caption="Panoz Esperante (Farnbacher / James)">
+    <img src="https://64.media.tumblr.com/tumblr_krs73qf3pI1qa8678o1_1280.jpg" alt="Panoz Esperante (Farnbacher / James)" loading="lazy">
+    <div class="caption">Panoz Esperante (Farnbacher / James)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs6s2TGSR1qa8678o1_1280.jpg" data-caption="Chevrolet Corvette C (Magnussen / O'Connell)">
+    <img src="https://64.media.tumblr.com/tumblr_krs6s2TGSR1qa8678o1_1280.jpg" alt="Chevrolet Corvette C (Magnussen / O'Connell)" loading="lazy">
+    <div class="caption">Chevrolet Corvette C (Magnussen / O'Connell)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs6jy8RvY1qa8678o1_1280.jpg" data-caption="Chevrolet Riley Corvette (Sutherland / Drissi / Gigliotti)">
+    <img src="https://64.media.tumblr.com/tumblr_krs6jy8RvY1qa8678o1_1280.jpg" alt="Chevrolet Riley Corvette (Sutherland / Drissi / Gigliotti)" loading="lazy">
+    <div class="caption">Chevrolet Riley Corvette (Sutherland / Drissi / Gigliotti)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs6afQoHi1qa8678o1_1280.jpg" data-caption="kickin' some dust into the corkscrew">
+    <img src="https://64.media.tumblr.com/tumblr_krs6afQoHi1qa8678o1_1280.jpg" alt="kickin' some dust into the corkscrew" loading="lazy">
+    <div class="caption">kickin' some dust into the corkscrew</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs636Scng1qa8678o1_1280.jpg" data-caption="bottleneck into Turn 9">
+    <img src="https://64.media.tumblr.com/tumblr_krs636Scng1qa8678o1_1280.jpg" alt="bottleneck into Turn 9" loading="lazy">
+    <div class="caption">bottleneck into Turn 9</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs5ftYuZx1qa8678o1_r1_1280.jpg" data-caption="way too fast.......">
+    <img src="https://64.media.tumblr.com/tumblr_krs5ftYuZx1qa8678o1_r1_1280.jpg" alt="way too fast......." loading="lazy">
+    <div class="caption">way too fast.......</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs52kZcRC1qa8678o1_r1_500.jpg" data-caption="Lola B06 Prototype (Burgess / McMurray / Willman) in the corkscrew">
+    <img src="https://64.media.tumblr.com/tumblr_krs52kZcRC1qa8678o1_r1_500.jpg" alt="Lola B06 Prototype (Burgess / McMurray / Willman) in the corkscrew" loading="lazy">
+    <div class="caption">Lola B06 Prototype (Burgess / McMurray / Willman) in the corkscrew</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krs09eIHyC1qa8678o1_500.jpg" data-caption="Falken Porsche 911 RS (Sellers / Cicero)">
+    <img src="https://64.media.tumblr.com/tumblr_krs09eIHyC1qa8678o1_500.jpg" alt="Falken Porsche 911 RS (Sellers / Cicero)" loading="lazy">
+    <div class="caption">Falken Porsche 911 RS (Sellers / Cicero)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krrzudYFGz1qa8678o1_r3_500.jpg" data-caption="Flying Lizard #44">
+    <img src="https://64.media.tumblr.com/tumblr_krrzudYFGz1qa8678o1_r3_500.jpg" alt="Flying Lizard #44" loading="lazy">
+    <div class="caption">Flying Lizard #44</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krrycwY8kd1qa8678o1_500.jpg" data-caption="Corkscrew freight train">
+    <img src="https://64.media.tumblr.com/tumblr_krrycwY8kd1qa8678o1_500.jpg" alt="Corkscrew freight train" loading="lazy">
+    <div class="caption">Corkscrew freight train</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krry7vgNnx1qa8678o1_500.jpg" data-caption="911 GT3 World Challenge Cup (Cosmo / Baker)">
+    <img src="https://64.media.tumblr.com/tumblr_krry7vgNnx1qa8678o1_500.jpg" alt="911 GT3 World Challenge Cup (Cosmo / Baker)" loading="lazy">
+    <div class="caption">911 GT3 World Challenge Cup (Cosmo / Baker)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krrxnfeqeM1qa8678o1_500.jpg" data-caption="Legendary Chaparral 2A (1963–66)">
+    <img src="https://64.media.tumblr.com/tumblr_krrxnfeqeM1qa8678o1_500.jpg" alt="Legendary Chaparral 2A (1963–66)" loading="lazy">
+    <div class="caption">Legendary Chaparral 2A (1963–66)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krrxlopzUB1qa8678o1_500.jpg" data-caption="Chaparral 2G Can-Am (late 1967 thru '68)">
+    <img src="https://64.media.tumblr.com/tumblr_krrxlopzUB1qa8678o1_500.jpg" alt="Chaparral 2G Can-Am (late 1967 thru '68)" loading="lazy">
+    <div class="caption">Chaparral 2G Can-Am (late 1967 thru '68)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krrxkcDRhA1qa8678o1_500.jpg" data-caption="Chaparral">
+    <img src="https://64.media.tumblr.com/tumblr_krrxkcDRhA1qa8678o1_500.jpg" alt="Chaparral" loading="lazy">
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krrxkyHMiP1qa8678o1_500.jpg" data-caption="Another view of Chaparral 2A">
+    <img src="https://64.media.tumblr.com/tumblr_krrxkyHMiP1qa8678o1_500.jpg" alt="Another view of Chaparral 2A" loading="lazy">
+    <div class="caption">Another view of Chaparral 2A</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krn7qzh9Lf1qa8678o1_r1_500.jpg" data-caption="Curtis / Sofronas 911 GT3 Cup entering Turn 4">
+    <img src="https://64.media.tumblr.com/tumblr_krn7qzh9Lf1qa8678o1_r1_500.jpg" alt="Curtis / Sofronas 911 GT3 Cup entering Turn 4" loading="lazy">
+    <div class="caption">Curtis / Sofronas 911 GT3 Cup entering Turn 4</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmxxl7wOK1qa8678o1_r3_500.jpg" data-caption="Close-up of Gil de Ferran in his last competitive ride">
+    <img src="https://64.media.tumblr.com/tumblr_krmxxl7wOK1qa8678o1_r3_500.jpg" alt="Close-up of Gil de Ferran in his last competitive ride" loading="lazy">
+    <div class="caption">Close-up of Gil de Ferran in his last competitive ride</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmxj7EFmd1qa8678o1_500.jpg" data-caption="BMW E92 M3 #92, Turn 4 (Mueller / Milner)">
+    <img src="https://64.media.tumblr.com/tumblr_krmxj7EFmd1qa8678o1_500.jpg" alt="BMW E92 M3 #92, Turn 4 (Mueller / Milner)" loading="lazy">
+    <div class="caption">BMW E92 M3 #92, Turn 4 (Mueller / Milner)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmx4siWsV1qa8678o1_500.jpg" data-caption="David Brabham (P1 and overall series winner) just getting past Burgess GT2 Corvette">
+    <img src="https://64.media.tumblr.com/tumblr_krmx4siWsV1qa8678o1_500.jpg" alt="David Brabham (P1 and overall series winner) just getting past Burgess GT2 Corvette" loading="lazy">
+    <div class="caption">David Brabham (P1 and overall series winner) just getting past Burgess GT2 Corvette</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmwqn0Syu1qa8678o1_500.jpg" data-caption="Ferrari F430 in corkscrew">
+    <img src="https://64.media.tumblr.com/tumblr_krmwqn0Syu1qa8678o1_500.jpg" alt="Ferrari F430 in corkscrew" loading="lazy">
+    <div class="caption">Ferrari F430 in corkscrew</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmixqRi421qa8678o1_r1_500.jpg" data-caption="Flying Lizard 911 RSR (Neiman / Van Overbeek)">
+    <img src="https://64.media.tumblr.com/tumblr_krmixqRi421qa8678o1_r1_500.jpg" alt="Flying Lizard 911 RSR (Neiman / Van Overbeek)" loading="lazy">
+    <div class="caption">Flying Lizard 911 RSR (Neiman / Van Overbeek)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmiojKY5u1qa8678o1_r1_500.jpg" data-caption="Turn 10 at speed — look at that compression!">
+    <img src="https://64.media.tumblr.com/tumblr_krmiojKY5u1qa8678o1_r1_500.jpg" alt="Turn 10 at speed — look at that compression!" loading="lazy">
+    <div class="caption">Turn 10 at speed — look at that compression!</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmihuIrKZ1qa8678o1_500.jpg" data-caption="Doran Ford GT-R (Murray / D. Robertson / A. Roberts)">
+    <img src="https://64.media.tumblr.com/tumblr_krmihuIrKZ1qa8678o1_500.jpg" alt="Doran Ford GT-R (Murray / D. Robertson / A. Roberts)" loading="lazy">
+    <div class="caption">Doran Ford GT-R (Murray / D. Robertson / A. Roberts)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmhouA4xv1qa8678o1_500.jpg" data-caption="Overall winner! Gil de Ferran P1 Acura in corkscrew">
+    <img src="https://64.media.tumblr.com/tumblr_krmhouA4xv1qa8678o1_500.jpg" alt="Overall winner! Gil de Ferran P1 Acura in corkscrew" loading="lazy">
+    <div class="caption">Overall winner! Gil de Ferran P1 Acura in corkscrew</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmfgeABBS1qa8678o1_500.jpg" data-caption="Turn 10 crowd">
+    <img src="https://64.media.tumblr.com/tumblr_krmfgeABBS1qa8678o1_500.jpg" alt="Turn 10 crowd" loading="lazy">
+    <div class="caption">Turn 10 crowd</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmf3dlrdH1qa8678o1_500.jpg" data-caption="Study of Acura #66 winglets">
+    <img src="https://64.media.tumblr.com/tumblr_krmf3dlrdH1qa8678o1_500.jpg" alt="Study of Acura #66 winglets" loading="lazy">
+    <div class="caption">Study of Acura #66 winglets</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmf7meMFg1qa8678o1_500.jpg" data-caption="">
+    <img src="https://64.media.tumblr.com/tumblr_krmf7meMFg1qa8678o1_500.jpg" alt="Acura" loading="lazy">
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krmcwgtgzG1qa8678o1_500.jpg" data-caption="Ferrari F430 Competizione Risi (Melo / Kaffer)">
+    <img src="https://64.media.tumblr.com/tumblr_krmcwgtgzG1qa8678o1_500.jpg" alt="Ferrari F430 Competizione Risi (Melo / Kaffer)" loading="lazy">
+    <div class="caption">Ferrari F430 Competizione Risi (Melo / Kaffer)</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/tumblr_krjcwv23wZ1qa8678o1_500.jpg" data-caption="Jim Sofronas — ALMS Challenge Cup, 911 GT3">
+    <img src="https://64.media.tumblr.com/tumblr_krjcwv23wZ1qa8678o1_500.jpg" alt="Jim Sofronas — ALMS Challenge Cup, 911 GT3" loading="lazy">
+    <div class="caption">Jim Sofronas — ALMS Challenge Cup, 911 GT3</div>
+  </div>
+
+</div>
+
+<div class="section-header">
+  <div class="section-label">More Racing</div>
+</div>
+
+<div class="gallery">
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/2cca9ce38d39e88aa2535930ce45b22b/tumblr_nr8muntcRH1qzsaodo1_1280.jpg" data-caption="Yessiree — that's AJ Foyt on the pole in the 1965 Tony Bettenhausen 200 in his &quot;backup&quot; dirt track car!!!!!">
+    <img src="https://64.media.tumblr.com/2cca9ce38d39e88aa2535930ce45b22b/tumblr_nr8muntcRH1qzsaodo1_1280.jpg" alt="AJ Foyt on the pole in the 1965 Tony Bettenhausen 200" loading="lazy">
+    <div class="caption">Yessiree — that's AJ Foyt on the pole in the 1965 Tony Bettenhausen 200 in his "backup" dirt track car!!!!!</div>
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/12fa12f602cdd857545b88691cd4e413/tumblr_nltw81ZncT1qzsaodo1_540.jpg" data-caption="">
+    <img src="https://64.media.tumblr.com/12fa12f602cdd857545b88691cd4e413/tumblr_nltw81ZncT1qzsaodo1_540.jpg" alt="" loading="lazy">
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/5abcda75b7e6037f168371a59328d60d/tumblr_mls3dn8uyr1qzsaodo1_540.jpg" data-caption="">
+    <img src="https://64.media.tumblr.com/5abcda75b7e6037f168371a59328d60d/tumblr_mls3dn8uyr1qzsaodo1_540.jpg" alt="" loading="lazy">
+  </div>
+
+  <div class="gallery-item" data-src="https://64.media.tumblr.com/s52o2dTwxqf81wvoRT4utB3bo1_540.jpg" data-caption="">
+    <img src="https://64.media.tumblr.com/s52o2dTwxqf81wvoRT4utB3bo1_540.jpg" alt="" loading="lazy">
+  </div>
+
+</div>
+
+<footer>
+  &copy; 2009 Daniel Orr &nbsp;&middot;&nbsp; All photographs taken at Mazda Raceway Laguna Seca
+</footer>
+
+<!-- Lightbox -->
+<div id="lb-overlay">
+  <button id="lb-close" aria-label="Close">&times;</button>
+  <button id="lb-prev" aria-label="Previous">&#8249;</button>
+  <img id="lb-img" src="" alt="">
+  <div id="lb-caption"></div>
+  <button id="lb-next" aria-label="Next">&#8250;</button>
+  <div id="lb-counter"></div>
+</div>
+
+<script>
+  const items   = Array.from(document.querySelectorAll('.gallery-item'));
+  const overlay = document.getElementById('lb-overlay');
+  const lbImg   = document.getElementById('lb-img');
+  const lbCap   = document.getElementById('lb-caption');
+  const lbCount = document.getElementById('lb-counter');
+  let current   = 0;
+
+  function openLightbox(index) {
+    current = index;
+    const item = items[index];
+    lbImg.src       = item.dataset.src;
+    lbImg.alt       = item.dataset.caption || '';
+    lbCap.textContent = item.dataset.caption || '';
+    lbCount.textContent = `${index + 1} / ${items.length}`;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  function navigate(dir) {
+    current = (current + dir + items.length) % items.length;
+    openLightbox(current);
+  }
+
+  items.forEach((item, i) => item.addEventListener('click', () => openLightbox(i)));
+  document.getElementById('lb-close').addEventListener('click', closeLightbox);
+  document.getElementById('lb-prev').addEventListener('click', () => navigate(-1));
+  document.getElementById('lb-next').addEventListener('click', () => navigate(1));
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+  });
+</script>
+
+</body>
+</html>
